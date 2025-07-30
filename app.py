@@ -15,11 +15,8 @@ app = Flask(__name__)
 # Configure CORS to allow requests from React app
 CORS(app, origins=[
     "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "https://localhost:3000",
-    "https://127.0.0.1:3000",
-    "*"  # Allow all origins for development (remove in production)
-], supports_credentials=True)
+    "http://127.0.0.1:3000"
+])
 
 # Cosmos DB credentials (from environment variables)
 COSMOS_URI = os.getenv("COSMOS_URI")
