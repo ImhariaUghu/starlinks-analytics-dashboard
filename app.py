@@ -129,5 +129,5 @@ def express_correlation():
     return jsonify({"correlation": round(correlation, 4)})
 
 # Run the Flask app
-if __name__ == "__main__":
-    app.run(debug=True)
+# if __name__ == "__main__":
+#     app.run(debug=True)
