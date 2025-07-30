@@ -1,13 +1,8 @@
 import axios from "axios";
 
 // Use CORS proxy as temporary solution
-const API_BASE = "http://slg-flask-api.azurewebsites.net";
-// Alternative CORS proxy if the first one doesn't work:
-// const API_BASE = "https://api.allorigins.win/raw?url=http://slg-flask-api.azurewebsites.net";
-// Try HTTPS instead of HTTP
-// const API_BASE = "https://slg-flask-api.azurewebsites.net"; 
-// Fallback to HTTP if HTTPS doesn't work
-// const API_BASE = "http://slg-flask-api.azurewebsites.net"; 
+const API_BASE = "http://slg-flask-api.azurewebsites.net/";
+ 
 
 export const getAverageCostByCarrier = () =>
   axios.get(`${API_BASE}/average-cost-by-carrier`)
