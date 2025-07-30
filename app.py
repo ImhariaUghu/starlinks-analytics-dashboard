@@ -4,7 +4,6 @@ from azure.cosmos import CosmosClient
 from datetime import datetime, timedelta
 import numpy as np
 import os
-from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
@@ -31,7 +30,7 @@ container = database.get_container_client(CONTAINER_NAME)
 # Home route (just for testing)
 @app.route("/")
 def home():
-    return {"message": "API is working ✅"}
+    return {"message": "API is working!"}
 
 # ✅ Q1: Average cost by carrier
 @app.route("/average-cost-by-carrier")
