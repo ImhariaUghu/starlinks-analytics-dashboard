@@ -5,8 +5,6 @@ from datetime import datetime, timedelta
 import numpy as np
 import os
 
-# Load environment variables
-load_dotenv()
 
 # Setup Flask app
 app = Flask(__name__)
