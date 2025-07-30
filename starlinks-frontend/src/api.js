@@ -1,8 +1,11 @@
 import axios from "axios";
 
+// Direct API URL (now that CORS is fixed on Azure)
 const API_BASE = "http://slg-flask-api.azurewebsites.net"; 
-// Temporary CORS proxy for testing (remove after Azure deployment)
+// Temporary CORS proxy for testing (no longer needed)
 // const API_BASE = "https://cors-anywhere.herokuapp.com/http://slg-flask-api.azurewebsites.net";
+// Alternative CORS proxy if needed:
+// const API_BASE = "https://api.allorigins.win/raw?url=http://slg-flask-api.azurewebsites.net";
 
 export const getAverageCostByCarrier = () =>
   axios.get(`${API_BASE}/average-cost-by-carrier`)
