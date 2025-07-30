@@ -4,11 +4,22 @@ from azure.cosmos import CosmosClient
 from datetime import datetime, timedelta
 import numpy as np
 import os
+from dotenv import load_dotenv
 
+# Load environment variables
+load_dotenv()
 
 # Setup Flask app
 app = Flask(__name__)
-CORS(app)
+
+# Configure CORS to allow requests from React app
+CORS(app, origins=[
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://localhost:3000",
+    "https://127.0.0.1:3000",
+    "*"  # Allow all origins for development (remove in production)
+], supports_credentials=True)
 
 # Cosmos DB credentials (from environment variables)
 COSMOS_URI = os.getenv("COSMOS_URI")
@@ -29,6 +40,11 @@ container = database.get_container_client(CONTAINER_NAME)
 @app.route("/")
 def home():
     return {"message": "API is working!"}
+
+# CORS test endpoint
+@app.route("/cors-test")
+def cors_test():
+    return {"message": "CORS is working!", "status": "success"}
 
 # ✅ Q1: Average cost by carrier
 @app.route("/average-cost-by-carrier")
@@ -126,5 +142,5 @@ def express_correlation():
     return jsonify({"correlation": round(correlation, 4)})
 
 # Run the Flask app
-# if __name__ == "__main__":
-#     app.run(debug=True)
+if __name__ == "__main__":
+    app.run(debug=True, host='0.0.0.0', port=5000)
