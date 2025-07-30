@@ -27,6 +27,27 @@ function Graphs({ averageCost, priorityDist, correlation, showAverageCost = true
   const hasAverageCostData = averageCost && averageCost.length > 0;
   const hasPriorityData = priorityDist && priorityDist.length > 0;
 
+  // Transform priority data for pie chart - group by Priority
+  const transformPriorityData = (data) => {
+    if (!data || data.length === 0) return [];
+    
+    const priorityGroups = {};
+    data.forEach(item => {
+      const priority = item.Priority;
+      if (!priorityGroups[priority]) {
+        priorityGroups[priority] = 0;
+      }
+      priorityGroups[priority] += item.Count;
+    });
+    
+    return Object.entries(priorityGroups).map(([priority, count]) => ({
+      name: priority,
+      value: count
+    }));
+  };
+
+  const transformedPriorityData = transformPriorityData(priorityDist);
+
   return (
     <div>
       {showAverageCost && (
@@ -64,34 +85,35 @@ function Graphs({ averageCost, priorityDist, correlation, showAverageCost = true
                   name="Average Cost (USD)"
                   radius={[4, 4, 0, 0]}
                 />
-              </BarChart>
+      </BarChart>
             </ResponsiveContainer>
           </div>
         ) : (
           <div className="text-center text-muted py-4">
             <i className="fas fa-chart-bar fa-3x mb-3" style={{ color: '#00CED1' }}></i>
             <p>No average cost data available</p>
+            <small>Check console for API errors</small>
           </div>
         )
       )}
 
       {showPriorityDist && (
-        hasPriorityData ? (
+        transformedPriorityData.length > 0 ? (
           <div className="mb-4">
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
-                  data={priorityDist}
-                  cx="50%"
-                  cy="50%"
+                  data={transformedPriorityData}
+          cx="50%"
+          cy="50%"
                   labelLine={false}
                   label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={80}
+          outerRadius={80}
                   fill="#00CED1"
-                  dataKey="Count"
-                  nameKey="Priority"
+                  dataKey="value"
+                  nameKey="name"
                 >
-                  {priorityDist.map((entry, index) => (
+                  {transformedPriorityData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={STARLINKS_COLORS[index % STARLINKS_COLORS.length]} />
                   ))}
                 </Pie>
@@ -106,13 +128,14 @@ function Graphs({ averageCost, priorityDist, correlation, showAverageCost = true
                   }}
                 />
                 <Legend />
-              </PieChart>
+      </PieChart>
             </ResponsiveContainer>
           </div>
         ) : (
           <div className="text-center text-muted py-4">
             <i className="fas fa-chart-pie fa-3x mb-3" style={{ color: '#00CED1' }}></i>
             <p>No priority distribution data available</p>
+            <small>Check console for API errors</small>
           </div>
         )
       )}

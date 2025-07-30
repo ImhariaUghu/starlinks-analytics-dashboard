@@ -26,26 +26,9 @@ function App() {
       
       <footer className="bg-light text-center py-3 mt-5">
         <div className="container">
-          <div className="row">
-            <div className="col-md-6">
-              <small className="text-muted">
-                © 2025 Starlinks Global Limited - All rights reserved
-              </small>
-            </div>
-            <div className="col-md-6">
-              <small className="text-muted">
-                <i className="fas fa-shipping-fast me-1"></i>
-                Lowest WISMO rates • Lowest loss rates • Lowest undeliverable rates
-              </small>
-            </div>
-          </div>
-          <div className="row mt-2">
-            <div className="col-12">
-              <small className="text-muted">
-                Expert Global Delivery for eCommerce Retailers
-              </small>
-            </div>
-          </div>
+          <small className="text-muted d-block mx-auto">
+            © 2025 Starlinks Global Limited - All rights reserved
+         </small>
         </div>
       </footer>
     </div>

@@ -19,11 +19,25 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const testIndividualEndpoint = async (endpointName, endpointFunction) => {
+    try {
+      console.log(`Testing ${endpointName}...`);
+      const result = await endpointFunction();
+      console.log(`${endpointName} result:`, result);
+      alert(`${endpointName}: Success! Check console for details.`);
+    } catch (err) {
+      console.error(`${endpointName} error:`, err);
+      alert(`${endpointName}: Failed! Check console for details.`);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         setError(null);
+        
+        console.log("Starting to fetch data...");
         
         const [avgCostData, delayedData, top5Data, priorityData, correlationData] = await Promise.all([
           getAverageCostByCarrier(),
@@ -32,6 +46,13 @@ function Dashboard() {
           getPriorityDistribution(),
           getExpressCorrelation()
         ]);
+
+        console.log("All data fetched successfully:");
+        console.log("Average Cost:", avgCostData);
+        console.log("Delayed Count:", delayedData);
+        console.log("Top 5:", top5Data);
+        console.log("Priority Dist:", priorityData);
+        console.log("Correlation:", correlationData);
 
         setAverageCost(avgCostData);
         setDelayedCount(delayedData.delayed_count);
@@ -66,6 +87,41 @@ function Dashboard() {
       <div className="container mt-4">
         <div className="alert alert-danger" role="alert">
           {error}
+        </div>
+        <div className="mt-3">
+          <h5>Test Individual Endpoints:</h5>
+          <div className="btn-group" role="group">
+            <button 
+              className="btn btn-outline-primary btn-sm"
+              onClick={() => testIndividualEndpoint("Average Cost", getAverageCostByCarrier)}
+            >
+              Test Average Cost
+            </button>
+            <button 
+              className="btn btn-outline-primary btn-sm"
+              onClick={() => testIndividualEndpoint("Delayed", getDelayedLast3Months)}
+            >
+              Test Delayed
+            </button>
+            <button 
+              className="btn btn-outline-primary btn-sm"
+              onClick={() => testIndividualEndpoint("Top 5", getTop5Expensive)}
+            >
+              Test Top 5
+            </button>
+            <button 
+              className="btn btn-outline-primary btn-sm"
+              onClick={() => testIndividualEndpoint("Priority", getPriorityDistribution)}
+            >
+              Test Priority
+            </button>
+            <button 
+              className="btn btn-outline-primary btn-sm"
+              onClick={() => testIndividualEndpoint("Correlation", getExpressCorrelation)}
+            >
+              Test Correlation
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -107,7 +163,21 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className="row mb-4">
+      {/* Debug Info
+      <div className="row mb-3">
+        <div className="col-12">
+          <div className="alert alert-info">
+            <strong>Debug Info:</strong> 
+            Average Cost: {averageCost.length} items | 
+            Delayed: {delayedCount} | 
+            Top 5: {top5.length} items | 
+            Priority: {priorityDist.length} items | 
+            Correlation: {correlation}
+          </div>
+        </div>
+      </div> */}
+
+      {/* <div className="row mb-4">
         <div className="col-12">
           <div className="card shadow-sm">
             <div className="card-header bg-primary text-white">
@@ -117,11 +187,11 @@ function Dashboard() {
               </h5>
             </div>
             <div className="card-body">
-              <Filters />
+      <Filters />
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="row mb-4">
         <div className="col-md-6">
@@ -133,8 +203,8 @@ function Dashboard() {
               </h5>
             </div>
             <div className="card-body">
-              <Graphs
-                averageCost={averageCost}
+      <Graphs
+        averageCost={averageCost}
                 priorityDist={[]}
                 correlation={null}
                 showAverageCost={true}
@@ -155,7 +225,7 @@ function Dashboard() {
             <div className="card-body">
               <Graphs
                 averageCost={[]}
-                priorityDist={priorityDist}
+        priorityDist={priorityDist}
                 correlation={null}
                 showAverageCost={false}
                 showPriorityDist={true}
@@ -217,7 +287,7 @@ function Dashboard() {
               </h5>
             </div>
             <div className="card-body">
-              <ShipmentsTable shipments={top5} />
+      <ShipmentsTable shipments={top5} />
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Use CORS proxy as temporary solution
-const API_BASE = "http://slg-flask-api.azurewebsites.net";
+const API_BASE = "https://slg-flask-api.azurewebsites.net";
  
 
 export const getAverageCostByCarrier = () =>
